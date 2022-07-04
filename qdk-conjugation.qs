@@ -1,4 +1,4 @@
-namespace QDKInverse {
+namespace QDKConjugation {
     open Microsoft.Quantum.Diagnostics;
     open Microsoft.Quantum.Intrinsic;
 
@@ -7,11 +7,13 @@ namespace QDKInverse {
         H(q);
     }
 
+    @EntryPoint()
     operation Main() : Unit {
         use q = Qubit();
 
-        MyOperator(q);
-        Adjoint MyOperator(q);
+        within {
+            MyOperator(q);
+        } apply {}
 
         DumpMachine();
         Reset(q);

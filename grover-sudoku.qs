@@ -29,7 +29,7 @@ namespace GroverSudoku {
         }
     }
 
-    @EntryPoint()
+    // @EntryPoint()
     operation Main() : Unit {
         use input = Qubit[4];
         use tmp = Qubit[4];
@@ -51,7 +51,7 @@ namespace GroverSudoku {
         }
 
         let results = MultiM(input);
-        ResetAll(input + tmp + [pkb]);
+        ResetAll(tmp + [pkb]);
         Message($"{results}");
     }
 }
