@@ -13,10 +13,11 @@ namespace QDKConjugation {
 
         within {
             MyOperator(q);
-        } apply {}
+        } apply {
+            Z(q);
+        }
 
         DumpMachine();
         Reset(q);
     }
-
 }
