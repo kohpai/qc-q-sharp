@@ -7,7 +7,7 @@ namespace QDKConjugation {
         H(q);
     }
 
-    @EntryPoint()
+    // @EntryPoint()
     operation Main() : Unit {
         use q = Qubit();
 
