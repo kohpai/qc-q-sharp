@@ -29,29 +29,43 @@ namespace GroverSudoku {
         }
     }
 
-    // @EntryPoint()
-    operation Main() : Unit {
-        use input = Qubit[4];
-        use tmp = Qubit[4];
-        use pkb = Qubit();
+    operation ReflectInitial(InitOp: Qubit[] => Unit is Adj, input: Qubit[]) : Unit {
+        within {
+            Adjoint InitOp(input);
+        } apply {
+            ReflectZero(input);
+        }
+    }
 
-        ApplyToEach(H, input);
+    // @EntryPoint()
+    operation DrawGrover(input: Qubit[], ancillas: Qubit[], pkb: Qubit) : String {
+
+        let PrepareInitialState = CurriedOpA(ApplyToEachA)(H);
+        
+        PrepareInitialState(input);
 
         X(pkb);
         H(pkb);
 
         for _ in 1..2 {
-            SudokuOracle(input, tmp, pkb);           
-
-            within {
-                ApplyToEachA(H, input);
-            } apply {
-                ReflectZero(input);
-            }
+            SudokuOracle(input, ancillas, pkb);           
+            ReflectInitial(PrepareInitialState, input);
         }
 
-        let results = MultiM(input);
-        ResetAll(tmp + [pkb]);
-        Message($"{results}");
+        let result = Fold((a, b) -> a + b, "", Mapped(x -> x == Zero ? "0" | "1", MultiM(input)));
+        ResetAll(input + ancillas + [pkb]);
+
+        return result;
     }
+
+    // @EntryPoint()
+    // operation Main() : Unit {
+    //     use input = Qubit[4];
+    //     use ancillas = Qubit[4];
+    //     use pkb = Qubit();
+
+    //     for s in DrawMany(DrawGrover, 512, (input, ancillas, pkb)) {
+    //         Message(s);
+    //     }
+    // }
 }
