@@ -47,10 +47,10 @@ namespace MaxCut {
         return Arrays.DrawMany(DrawAnsatz, shots, DrawParams(Graph(nodes, edges), theta));
     }
 
-    @EntryPoint()
-    operation Main() : Unit {
-        for s in PrepareAnsatzes([1.0, 1.0, 1.0, 1.0], 10) {
-            Message(s);
-        }
-    }
+    // @EntryPoint()
+    // operation Main() : Unit {
+    //     for s in PrepareAnsatzes([1.0, 1.0, 1.0, 1.0], 10) {
+    //         Message(s);
+    //     }
+    // }
 }
